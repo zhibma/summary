@@ -1,0 +1,41 @@
+【git官方教程】
+https://git-scm.com/book/zh/v2
+支持pdf、epub和mobi等电子书格式下载
+
+【GitHub的使用】
+1、在GitHub上点击New repository
+
+2、填写Repository的Name和Description，创建版本库时不创建README.md等文件
+
+3、设置全局的用户名和邮箱
+git config --global user.name zhibma
+git config --global user.email zhibma@sohu.com
+
+4、创建和初始化本地版本库
+mkdir <repository>
+cd <repository>
+git init
+
+echo -e "Repository: <repository>\n" > README.md
+echo "此版本库用于存放...。" >> README.md
+git add README.md
+git commit -m "添加版本库说明文件，初始化版本库。"
+
+5、创建ssh密钥，并将公钥添加到GitHub
+ssh-keygen -t rsa -N "" -C "zhibma@sohu.com" -f ~/.ssh/id_rsa
+
+6、关联远程版本库并推送本地commit代码
+git remote add origin git@github.com:zhibma/summary.git
+git push -u origin master
+
+【Git的使用】
+1、版本日志的单行显示
+git log --pretty=oneline
+
+2、修改提交说明信息
+修改最后一次提交
+git commit --amend
+修改最后3个提交
+git rebase -i HEAD~3
+git commit --amend
+git rebase --continue
