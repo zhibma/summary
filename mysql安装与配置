@@ -1,0 +1,49 @@
+#下载mysql5.7社区版
+http://mirrors.ustc.edu.cn/mysql-ftp/Downloads/MySQLInstaller/mysql-installer-community-5.7.22.1.msi
+
+wget http://mirrors.ustc.edu.cn/mysql-repo/mysql57-community-release-el7-11.noarch.rpm
+wget http://mirrors.ustc.edu.cn/mysql-ftp/Downloads/MySQL-5.7/mysql-community-client-5.7.22-1.el7.x86_64.rpm
+wget http://mirrors.ustc.edu.cn/mysql-ftp/Downloads/MySQL-5.7/mysql-community-server-5.7.22-1.el7.x86_64.rpm
+
+#安装mysql[CentOS 7]
+yum install -y mysql57-community-release-el7-11.noarch.rpm
+vim /etc/yum.repos.d/mysql-community.repo
+yum makecache
+yum install -y mysql-community*.rpm
+rm -rf *.rpm
+
+#禁止mysql守护进程开机启动
+systemctl disable mysqld
+
+#启停mysql守护进程[CentOS 7]
+systemctl start mysqld
+systemctl stop mysqld
+
+#启停mysql守护进程[Windows]
+net start MySQL57
+net stop MySQL57
+
+#忘记密码时重设密码，允许设为空
+打开服务配置文件：/usr/lib/systemd/system/mysqld.service；
+增加启动选项：--skip-grant-tables，重启服务
+mysql -u root
+mysql> UPDATE mysql.user SET authentication_string=PASSWORD('root') WHERE user='root';
+mysql> FLUSH PRIVILEGES;
+恢复服务配置文件，重启服务
+
+#以指定权限和密码创建一个新用户
+mysql> set global validate_password_policy=0; #只关心长度
+mysql> set global validate_password_length=4; #最小长度，最小只能设4
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%' IDENTIFIED BY 'admin' WITH GRANT OPTION;
+mysql> FLUSH PRIVILEGES;
+mysql> set global validate_password_policy=1; #关心长度，关心各类字符单独的计数
+mysql> set global validate_password_length=8; #最小长度，默认值8
+
+#防火墙开放3306端口
+firewall-cmd --add-service mysqld --permanent
+firewall-cmd --reload
+firewall-cmd --list-all
+
+#允许root远程登录
+mysql> UPDATE mysql.user SET host = '%' where user = 'root';
+mysql> FLUSH PRIVILEGES;
