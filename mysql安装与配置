@@ -23,27 +23,30 @@ systemctl stop mysqld
 net start MySQL57
 net stop MySQL57
 
-#忘记密码时重设密码，允许设为空
-打开服务配置文件：/usr/lib/systemd/system/mysqld.service；
-增加启动选项：--skip-grant-tables，重启服务
-mysql -u root
-mysql> UPDATE mysql.user SET authentication_string=PASSWORD('root') WHERE user='root';
-mysql> FLUSH PRIVILEGES;
-恢复服务配置文件，重启服务
+#调整密码检验策略，修改root密码
+mysql> set global validate_password_policy=0;
+mysql> set global validate_password_length=4;
+mysql> alter user 'root'@'localhost' identified by 'root';
+#恢复密码检验策略，重启服务也可以恢复
+mysql> set global validate_password_policy=1;
+mysql> set global validate_password_length=8;
 
-#以指定权限和密码创建一个新用户
-mysql> set global validate_password_policy=0; #只关心长度
-mysql> set global validate_password_length=4; #最小长度，最小只能设4
-mysql> GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%' IDENTIFIED BY 'admin' WITH GRANT OPTION;
-mysql> FLUSH PRIVILEGES;
-mysql> set global validate_password_policy=1; #关心长度，关心各类字符单独的计数
-mysql> set global validate_password_length=8; #最小长度，默认值8
+#允许root远程登录
+mysql> update mysql.user set host='%' where user='root';
+mysql> flush privileges;
 
 #防火墙开放3306端口
-firewall-cmd --add-service mysqld --permanent
+firewall-cmd --add-service mysql --permanent
 firewall-cmd --reload
 firewall-cmd --list-all
 
-#允许root远程登录
-mysql> UPDATE mysql.user SET host = '%' where user = 'root';
-mysql> FLUSH PRIVILEGES;
+#以指定权限密码创建一个新用户
+mysql> grant all privileges on *.* to 'admin'@'%' identified by 'admin' with grant option;
+
+#忘记密码时重设密码，此时允许设为空
+打开服务配置文件/usr/lib/systemd/system/mysqld.service
+增加启动选项--skip-grant-tables，启动服务
+mysql -u root
+mysql> update mysql.user set authentication_string=password('root') where user='root';
+mysql> flush privileges;
+关闭服务，恢复服务配置文件
