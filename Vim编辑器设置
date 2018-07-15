@@ -1,0 +1,6 @@
+set fileencodings=utf-8,euc-cn,ucs-2,ucs-2le
+set termencoding=utf-8
+set encoding=utf-8
+
+set tabstop=4
+set expandtab
