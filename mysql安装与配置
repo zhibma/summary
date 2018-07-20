@@ -50,3 +50,6 @@ mysql -u root
 mysql> update mysql.user set authentication_string=password('root') where user='root';
 mysql> flush privileges;
 关闭服务，恢复服务配置文件
+
+#使用mysql命令工具连接远程数据库
+mysql -uadmin -padmin -h192.168.56.1 -A
