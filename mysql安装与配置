@@ -53,3 +53,6 @@ mysql> flush privileges;
 
 #使用mysql命令工具连接远程数据库
 mysql -uadmin -padmin -h192.168.56.1 -A
+
+#安装mysql开发库
+yum install -y mysql-community-devel
