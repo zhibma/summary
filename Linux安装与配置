@@ -6,14 +6,28 @@ ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
 cat ~/.ssh/id_rsa.pub > ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/authorized_keys
 
-#开启samba服务
-systemctl start smb
-systemctl enable smb
+#增加与系统账户同名的samba用户
+smbpasswd -a mazb
 
-##防火墙允许smb服务
+#开放SElinux权限
+setsebool -P samba_export_all_rw=1
+
+#防火墙允许smb服务
 firewall-cmd --add-service samba --permanent
 firewall-cmd --reload
 firewall-cmd --list-all
+
+#配置文件/目录默认权限
+vim /etc/samba/smb.conf
+[homes]
++++
+        create mask = 0664
+        directory mask = 0775
++++
+
+#开启samba服务
+systemctl enable smb
+systemctl start smb
 
 #查找/下载rpm包
 https://pkgs.org
