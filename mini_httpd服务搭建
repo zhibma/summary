@@ -1,0 +1,28 @@
+#安装mini_httpd
+curl -O http://repo.iotti.biz/CentOS/7/x86_64/mini_httpd-1.25-1.x86_64.rpm
+yum install -y mini_httpd-1.25-1.x86_64.rpm
+
+#防火墙允许http服务
+firewall-cmd --add-service http --permanent
+firewall-cmd --reload
+firewall-cmd --list-all
+
+#修改配置文件
+vim /etc/mini_httpd.cnf
+#port=80
+#dir=/var/mini_httpd
+#cgipat=cgi-bin/*.cgi
+#charset=UTF-8
+
+#修改启动参数
+vim /etc/rc.d/init.d/mini_httpd
+-        action "Starting mini_httpd" $HTTPD -l $LOGFILE -i $PIDFILE;
++        action "Starting mini_httpd" $HTTPD -C /etc/mini_httpd.cnf -l $LOGFILE -i $PIDFILE;
+systemctl daemon-reload
+
+#服务开启
+systemctl start mini_httpd
+chkconfig mini_httpd on
+
+#关于默认页面
+URL中不指定文件，则默认打开/var/mini_httpd/index.html，这个文件不存在时，显示/var/mini_httpd文件夹下的文件和目录
