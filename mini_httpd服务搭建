@@ -9,6 +9,7 @@ firewall-cmd --list-all
 
 #修改配置文件
 vim /etc/mini_httpd.cnf
+#host=192.168.56.100
 #port=80
 #dir=/var/mini_httpd
 #cgipat=cgi-bin/*.cgi
