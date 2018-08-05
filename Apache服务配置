@@ -12,3 +12,5 @@ curl http://127.0.0.1
 firewall-cmd --add-service http --permanent
 firewall-cmd --reload
 firewall-cmd --list-all
+
+#URL指向一个空文件夹时，默认打开index.html，当index.html不能存在时，显示该文件夹的内容
