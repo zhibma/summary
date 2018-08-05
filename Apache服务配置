@@ -17,20 +17,26 @@ systemctl enable httpd
 #测试
 curl http://127.0.0.1
 
+#修改/etc/httpd/conf/httpd.conf
+DocumentRoot "/var/www"
+
 #修改/etc/httpd/conf.d/python.conf
 LoadModule python_module modules/mod_python.so
 
 <Directory /var/www/python>
     SetHandler mod_python
-    #AddHandler mod_python .py
     PythonHandler mod_python.publisher
     PythonDebug On
 </Directory>
 
-#修改/etc/httpd/conf/httpd.conf
-DocumentRoot "/var/www"
+#准备python文件夹
+mkdir /var/www/python
+cd /var/www/python
++echo 'index = "default python page."' > index.py
+
+#特殊说明
+http://127.0.0.1/python/dir1/   <==>    http://127.0.0.1/python/dir1/index.py/index     #index函数或变量不存在时报错
+http://127.0.0.1/html/dir1/     <==>    http://127.0.0.1/html/dir1/index.html           #index.html不存在时返回文件列表
 
 #重新启动
 systemctl restart httpd
-
-#URL指向一个空文件夹时，默认打开index.html，当index.html不能存在时，显示该文件夹的内容
