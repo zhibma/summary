@@ -4,6 +4,7 @@ yum install httpd
 #安装mod_python
 curl -O http://repo.iotti.biz/CentOS/7/x86_64/mod_python-3.5.0-16.el7.lux.1.x86_64.rpm
 yum install -y mod_python-3.5.0-16.el7.lux.1.x86_64.rpm
+rm -f mod_python-3.5.0-16.el7.lux.1.x86_64.rpm
 
 #配置防火墙
 firewall-cmd --add-service http --permanent
