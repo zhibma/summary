@@ -35,7 +35,8 @@ systemctl enable httpd
 
 #特殊说明
 http://127.0.0.1/html/dir1/             <==>    http://127.0.0.1/html/dir1/index.html           #index.html不存在时返回文件列表
-http://127.0.0.1/python/dir1/           <==>    http://127.0.0.1/python/dir1/index.py/index     #index.py不存在时报错
-http://127.0.0.1/python/dir1/xxx        <==>    http://127.0.0.1/python/dir1/xxx.py             #xxx.py存在时等价关系成立
+http://127.0.0.1/python/dir1/           <==>    http://127.0.0.1/python/dir1/index.html         #index.html应当不存在，否则报错
+http://127.0.0.1/python/dir1/           <==>    http://127.0.0.1/python/dir1/index.py/index     #index.html不存在时等价关系成立
+http://127.0.0.1/python/dir1/xxx        <==>    http://127.0.0.1/python/dir1/xxx.py
 http://127.0.0.1/python/dir1/xxx        <==>    http://127.0.0.1/python/dir1/index.py/xxx       #xxx.py不存在时等价关系成立
 http://127.0.0.1/python/dir1/xxx.html   <==>    http://127.0.0.1/python/dir1/xxx.html.py/index
