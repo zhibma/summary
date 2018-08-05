@@ -1,9 +1,14 @@
-#安装
+#安装apache
 yum install httpd
 
 #安装mod_python
 curl -O http://repo.iotti.biz/CentOS/7/x86_64/mod_python-3.5.0-16.el7.lux.1.x86_64.rpm
 yum install -y mod_python-3.5.0-16.el7.lux.1.x86_64.rpm
+
+#配置防火墙
+firewall-cmd --add-service http --permanent
+firewall-cmd --reload
+firewall-cmd --list-all
 
 #启动
 systemctl start httpd
@@ -12,9 +17,20 @@ systemctl enable httpd
 #测试
 curl http://127.0.0.1
 
-#配置防火墙
-firewall-cmd --add-service http --permanent
-firewall-cmd --reload
-firewall-cmd --list-all
+#修改/etc/httpd/conf.d/python.conf
+LoadModule python_module modules/mod_python.so
+
+<Directory /var/www/python>
+    SetHandler mod_python
+    #AddHandler mod_python .py
+    PythonHandler mod_python.publisher
+    PythonDebug On
+</Directory>
+
+#修改/etc/httpd/conf/httpd.conf
+DocumentRoot "/var/www"
+
+#重新启动
+systemctl restart httpd
 
 #URL指向一个空文件夹时，默认打开index.html，当index.html不能存在时，显示该文件夹的内容
