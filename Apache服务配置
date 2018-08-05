@@ -1,0 +1,14 @@
+#安装
+yum install httpd
+
+#启动
+systemctl start httpd
+systemctl enable httpd
+
+#测试
+curl http://127.0.0.1
+
+#配置防火墙
+firewall-cmd --add-service http --permanent
+firewall-cmd --reload
+firewall-cmd --list-all
