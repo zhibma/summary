@@ -32,11 +32,16 @@ LoadModule python_module modules/mod_python.so
 #准备python文件夹
 mkdir /var/www/python
 cd /var/www/python
-+echo 'index = "default python page."' > index.py
++def index(req):
++    return "default python page."
 
 #特殊说明
-http://127.0.0.1/python/dir1/   <==>    http://127.0.0.1/python/dir1/index.py/index     #index函数或变量不存在时报错
-http://127.0.0.1/html/dir1/     <==>    http://127.0.0.1/html/dir1/index.html           #index.html不存在时返回文件列表
+http://127.0.0.1/html/dir1/             <==>    http://127.0.0.1/html/dir1/index.html           #index.html不存在时返回文件列表
+http://127.0.0.1/python/dir1/           <==>    http://127.0.0.1/python/dir1/index.py/index     #index函数不存在时报错
+http://127.0.0.1/python/dir1/xxx.html   <==>    http://127.0.0.1/python/dir1/xxx.html.py/index
+
+http://127.0.0.1/python/dir1/xxx        <==>    http://127.0.0.1/python/dir1/xxx.py             #xxx.py存在
+http://127.0.0.1/python/dir1/xxx        <==>    http://127.0.0.1/python/dir1/index.py/xxx       #xxx.py不存在
 
 #重新启动
 systemctl restart httpd
