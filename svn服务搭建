@@ -1,11 +1,8 @@
-#关闭防火墙
-systemctl disable firewalld
-systemctl stop firewalld
-
 # 创建版本库
-svnadmin create /var/svnrepo
+svnadmin create /var/svn
 
 # 配置服务
+vim /var/svn/conf/svnserve.conf
 anon-access = none
 auth-access = writ
 password-db = passwd
@@ -13,22 +10,30 @@ authz-db = authz
 realm = C Development Repository
 
 # 配置账户
-vim passwd
+vim /var/svn/conf/passwd
 [users]
 admin = ''''''
 
 # 配置权限
-vim authz
+vim /var/svn/conf/authz
 [/]
 admin = rw
 
 # 允许修改日志信息
-cd /var/svnrepo/hooks
+cd /var/svn/hooks
 cp pre-revprop-change.tmpl pre-revprop-change
 chmod 755 pre-revprop-change
 
-# 配置服务开机自启动
-echo '/usr/bin/svnserve -d -r /var/svnrepo' >> /etc/rc.d/rc.local
+#配置防火墙
+firewall-cmd --add-port=3690/tcp --permanent
+firewall-cmd --reload
+
+#关闭selinux
+vim /etc/selinux/config
+
+# 打开服务
+systemctl enable svnserve.service
+systemctl start svnserve.service
 
 # 特别说明
 仅允许特定用户下载代码的情况下，anon-access必须为none才能查看到历史comment信息
