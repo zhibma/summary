@@ -1,3 +1,7 @@
+#关闭防火墙
+systemctl disable firewalld
+systemctl stop firewalld
+
 # 创建版本库
 svnadmin create /var/svnrepo
 
