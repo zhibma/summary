@@ -6,7 +6,7 @@ systemctl stop firewalld
 svnadmin create /var/svnrepo
 
 # 配置服务
-anon-access = none
+anon-access = read
 auth-access = writ
 password-db = passwd
 authz-db = authz
