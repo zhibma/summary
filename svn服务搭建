@@ -6,7 +6,7 @@ systemctl stop firewalld
 svnadmin create /var/svnrepo
 
 # 配置服务
-anon-access = read
+anon-access = none
 auth-access = writ
 password-db = passwd
 authz-db = authz
@@ -15,14 +15,18 @@ realm = C Development Repository
 # 配置账户
 vim passwd
 [users]
-mazb = ''''''
+admin = ''''''
 
 # 配置权限
 vim authz
 [/]
-mazb = rw
+admin = rw
 
 # 允许修改日志信息
 cd /var/svnrepo/hooks
 cp pre-revprop-change.tmpl pre-revprop-change
 chmod 755 pre-revprop-change
+
+# 特别说明
+仅允许特定用户下载代码的情况下，anon-access必须为none才能查看到历史comment信息
+如果允许任何用户下载代码，首先须添加“* = r”权限，然后修改anon-access为read
