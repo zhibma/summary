@@ -1,0 +1,24 @@
+# 创建版本库
+svnadmin create /var/svnrepo
+
+# 配置服务
+anon-access = none
+auth-access = writ
+password-db = passwd
+authz-db = authz
+realm = C Development Repository
+
+# 配置账户
+vim passwd
+[users]
+mazb = ''''''
+
+# 配置权限
+vim authz
+[/]
+mazb = rw
+
+# 允许修改日志信息
+cd /var/svnrepo/hooks
+cp pre-revprop-change.tmpl pre-revprop-change
+chmod 755 pre-revprop-change
