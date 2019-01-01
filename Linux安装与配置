@@ -29,5 +29,13 @@ vim /etc/samba/smb.conf
 systemctl enable smb
 systemctl start smb
 
+#禁用selinux
+selinuxenabled
+if [ 0 -eq ${?} ]
+then
+    setenforce 0 2>/dev/null
+    sed -i 's/^SELINUX=.*$/SELINUX=disabled/' /etc/selinux/config
+fi
+
 #查找/下载rpm包
 https://pkgs.org
