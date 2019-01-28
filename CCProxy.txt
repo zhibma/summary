@@ -1,0 +1,9 @@
+1、安装CCProxy-8.0；
+2、按settings.png设置；
+3、在shell中，执行export http_proxy=http://12.12.12.135:2350；
+4、执行curl http://10.153.3.130成功。
+
+Add for ubuntu:
+echo 'Acquire::http::Pipeline-Depth 0;' > /etc/apt/apt.conf.d/99fixbadproxy
+echo 'Acquire::http::No-Cache true;' >> /etc/apt/apt.conf.d/99fixbadproxy
+echo 'Acquire::BrokenProxy true;' >> /etc/apt/apt.conf.d/99fixbadproxy
