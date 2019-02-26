@@ -62,9 +62,8 @@ http://127.0.0.1/python/dir1/xxx.html   <==>    http://127.0.0.1/python/dir1/xxx
     PythonDebug On
 </Location>
 
-#Add WSGI application
-vim /www/dynamic/wsgi-apps/test/__init__.py
-__all__ = ["wsgi"]
+#Add WSGI application, very important
+touch /www/dynamic/wsgi-apps/test/__init__.py
 
 vim /www/dynamic/wsgi-apps/test/wsgi.py
 def application(environ, start_response):
