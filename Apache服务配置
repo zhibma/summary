@@ -49,3 +49,34 @@ http://127.0.0.1/python/dir1/xxx.html   <==>    http://127.0.0.1/python/dir1/xxx
     RewriteCond %{SERVER_PORT} 80
     RewriteRule ^(.*) https://%{SERVER_NAME}/$1 [R,L]
 </IfModule>
+
+## How to use wsgi handler of mod_python-3.5.0 ##
+#Config apache server
+DocumentRoot "/www/dynamic"
+
+<Location /wsgi-apps>
+    SetHandler mod_python
+    PythonHandler mod_python.wsgi
+    PythonOption mod_python.wsgi.application test.wsgi
+    PythonPath "['/www/dynamic/wsgi-apps'] + sys.path"
+    PythonDebug On
+</Location>
+
+#Add WSGI application
+vim /www/dynamic/wsgi-apps/test/__init__.py
+__all__ = ["wsgi"]
+
+vim /www/dynamic/wsgi-apps/test/wsgi.py
+def application(environ, start_response):
+    status = '200 OK'
+    output = 'WSGI handler of mod_python test OK!!!'
+
+    response_headers = [('Content-type', 'text/plain'),
+                        ('Content-Length', str(len(output)))]
+    start_response(status, response_headers)
+
+    return [output]
+
+#Have a test
+curl http://localhost/wsgi-apps
+curl http://localhost/wsgi-apps/xxxx
