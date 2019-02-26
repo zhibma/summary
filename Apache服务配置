@@ -50,10 +50,10 @@ http://127.0.0.1/python/dir1/xxx.html   <==>    http://127.0.0.1/python/dir1/xxx
     RewriteRule ^(.*) https://%{SERVER_NAME}/$1 [R,L]
 </IfModule>
 
+## 以下配置与上文无依赖关系 ##
 ## How to use wsgi handler of mod_python-3.5.0 ##
-#Config apache server
-DocumentRoot "/www/dynamic"
 
+#Config apache server
 <Location /wsgi-apps>
     SetHandler mod_python
     PythonHandler mod_python.wsgi
