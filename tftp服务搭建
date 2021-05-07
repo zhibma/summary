@@ -1,0 +1,7 @@
+vi /etc/yum.repos.d/CentOS-Base.repo
+yum makecache
+yum install tftp-server xinetd
+vi /etc/xinetd.d/tftp
+chmod 777 /var/lib/tftpboot
+systemctl disable firewalld
+reboot
